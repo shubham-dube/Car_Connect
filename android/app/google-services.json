@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "843646198725",
+    "project_id": "fixitparts-9a290",
+    "storage_bucket": "fixitparts-9a290.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843646198725:android:69ed8dd4ce9d645cc861ac",
+        "android_client_info": {
+          "package_name": "com.fixitparts.fixitparts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5ajviKMWQIzKJcJvblvs97YXtyLw_Ilg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843646198725:android:8def2e93eddcb34dc861ac",
+        "android_client_info": {
+          "package_name": "com.fixitparts.fixitparts.fixitparts2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5ajviKMWQIzKJcJvblvs97YXtyLw_Ilg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

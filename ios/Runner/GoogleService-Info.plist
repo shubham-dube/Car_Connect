@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDVegsJ2II7CCV8h30QuscA4eBV3ttEkFE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>843646198725</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fixitparts.fixitparts.fixitparts2</string>
+	<key>PROJECT_ID</key>
+	<string>fixitparts-9a290</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fixitparts-9a290.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:843646198725:ios:674904c04825c1b7c861ac</string>
+</dict>
+</plist>

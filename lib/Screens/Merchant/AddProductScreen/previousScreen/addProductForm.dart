@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'customTextField.dart';
+import '../customTextField.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -10,7 +10,7 @@ import 'package:FixItParts/config.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'productAddedDialog.dart';
+import '../productAddedDialog.dart';
 import 'addCategory.dart';
 
 class ProductForm extends StatefulWidget {

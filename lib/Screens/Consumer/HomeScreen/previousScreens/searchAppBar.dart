@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../ProfileScreen/Profile_Screen.dart';
+import '../../ProfileScreen/Profile_Screen.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   const SearchAppBar();
@@ -29,33 +29,12 @@ class _SearchAppBar extends State<SearchAppBar>  {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black38
+        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.search,color: Colors.white,),
-                  onPressed: () {},
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width*0.6,
-                  child: TextField(
-
-                    decoration: const InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                      ),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: Colors.white54),
-                      border: InputBorder.none,
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
-                  ),
-                ),
-              ],
-            ),
 
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -97,6 +76,7 @@ class _SearchAppBar extends State<SearchAppBar>  {
 
           ],
         ),
+        bottom: ,
       ),
     );
   }

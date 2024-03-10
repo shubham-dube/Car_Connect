@@ -6,11 +6,11 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.white,
       fontFamily: "Muli",
 
-      appBarTheme: const AppBarTheme(
-        color: Colors.blue,
-        iconTheme: IconThemeData(color: Colors.white),
-        titleTextStyle: TextStyle(color: Colors.white),
-      ),
+      // appBarTheme: const AppBarTheme(
+      //   color: Colors.blue,
+      //   iconTheme: IconThemeData(color: Colors.white),
+      //   titleTextStyle: TextStyle(color: Colors.white),
+      // ),
 
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: Colors.black),
@@ -46,7 +46,6 @@ class AppTheme {
 
 const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.all(Radius.circular(28)),
-  borderSide: BorderSide(color: Colors.black),
   gapPadding: 10,
 );
 

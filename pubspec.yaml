@@ -19,6 +19,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   image_picker:
   dotted_border:
+  carousel_slider:
   #  firebase_analytics:
   firebase_core:
   firebase_storage: ^11.0.7

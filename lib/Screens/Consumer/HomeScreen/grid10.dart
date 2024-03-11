@@ -1,8 +1,97 @@
 import 'package:flutter/material.dart';
+import '../CategoryServicesScreen/Category_Services_Screen.dart';
+import '../CategoryProductScreen/Category_Product_Screen.dart';
 
 class Grids extends StatelessWidget {
+  final allServices;
+  final allProducts;
+  Grids({required this.allProducts, required this.allServices});
 
-  final topService = [
+  final List<String> appTitles = [
+    'Car Washing Services',
+    'Car Inspection Services',
+    'Car Denting & Painting',
+    'Car AC Service',
+    'Car Detailing Services',
+    'Car Wheels & Tyres',
+    'Car Cleaning Products',
+    'Car Batteries',
+    'Car Oil Products',
+    'Car Brakes'
+  ];
+  final List<String> topImages = [
+    'assets/images/washBanner.jpg',
+    'assets/images/inspectionBanner.png',
+    'assets/images/scratchBanner.png',
+    'assets/images/acBanner.png',
+    'assets/images/detailingBanner.png',
+    'assets/images/tyreBanner.png',
+    'assets/images/cleaningBanner.webp',
+    'assets/images/batteryBanner.jpg',
+    'assets/images/oilBanner.png',
+    'assets/images/brakeBanner.jpg',
+  ];
+
+  final List<String> topBrakeBrands = [
+    'assets/images/masuLogo.jpg',
+    'assets/images/mindaLogo.png',
+    'assets/images/tvsClutchLogo.jpeg',
+    'assets/images/boschLogo.jpg',
+  ];
+  final List<String> topBrakeBrandsName = [
+    'Masu Brakes',
+    'Uno Minda',
+    'TVS AutoClutch',
+    'Bosch',
+  ];
+
+  final List<String> topWheelBrands = [
+    'assets/images/mrfLogo.png',
+    'assets/images/neoLogo.jpg',
+    'assets/images/michelinLogo.webp',
+    'assets/images/apolloLogo.png',
+    'assets/images/ceatLogo.png',
+  ];
+  final List<String> topWheelBrandsName = [
+    'MRF',
+    'Neo Wheels',
+    'Michelin',
+    'Apollo tyres',
+    'CEAT Tyres'
+  ];
+
+  final List<String> topBatteriesBrands = [
+    'assets/images/exideLogo.webp',
+    'assets/images/amaronLogo.jpg',
+    'assets/images/tataGreenLogo.png',
+    'assets/images/johnsonControlLogo.png',
+  ];
+  final List<String> topBatteriesBrandsName = [
+    'EXIDE',
+    'Amaron',
+    'TATA',
+    'Johnson Control',
+  ];
+
+  final List<String> topCleaningBrands = [
+    'assets/images/3mLogo.jpg',
+    'assets/images/waxpolLogo.jpg',
+  ];
+  final List<String> topCleaningBrandsName = [
+    '3M',
+    'Waxpol',
+  ];
+
+  final List<String> topOilBrands = [
+    'assets/images/castrolLogo.webp',
+    'assets/images/mobilLogo.jpg',
+  ];
+  final List<String> topOilBrandsName = [
+    'Castrol',
+    'Mobil',
+  ];
+
+  final List<String> topService = [
     'assets/images/washGrid.png',
     'assets/images/inspectionGrid.jpg',
     'assets/images/dentGrid.jpg',
@@ -10,7 +99,7 @@ class Grids extends StatelessWidget {
     'assets/images/detailingGrid.webp',
   ];
 
-  final topProducts = [
+  final List<String> topProducts = [
     'assets/images/wheelGrid.jpg',
     'assets/images/cleanItemGrid.jpg',
     'assets/images/batteryGrid.jpg',
@@ -39,7 +128,15 @@ class Grids extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              CategoryServicesScreen(
+                                  allServices: allServices, allProducts: allProducts,
+                                category: 'Car Wash',appTitle: appTitles[0],topImage: topImages[0],
+                              )
+                          )
+                      );
                     },
                     child: Container(
                       width: 65,
@@ -66,7 +163,15 @@ class Grids extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              CategoryServicesScreen(
+                                allServices: allServices, allProducts: allProducts,
+                                category: 'Inspection',appTitle: appTitles[1],topImage: topImages[1],
+                              )
+                          )
+                      );
                     },
                     child: Container(
                       width: 65,
@@ -93,7 +198,15 @@ class Grids extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              CategoryServicesScreen(
+                                allServices: allServices, allProducts: allProducts,
+                                category: 'Denting & Painting',appTitle: appTitles[2],topImage: topImages[2],
+                              )
+                          )
+                      );
                     },
                     child: Container(
                       width: 65,
@@ -120,7 +233,15 @@ class Grids extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              CategoryServicesScreen(
+                                allServices: allServices, allProducts: allProducts,
+                                category: 'AC Repair',appTitle: appTitles[3],topImage: topImages[3],
+                              )
+                          )
+                      );
                     },
                     child: Container(
                       width: 65,
@@ -147,7 +268,15 @@ class Grids extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              CategoryServicesScreen(
+                                allServices: allServices, allProducts: allProducts,
+                                category: 'Detailing',appTitle: appTitles[4],topImage: topImages[4],
+                              )
+                          )
+                      );
                     },
                     child: Container(
                       width: 65,
@@ -185,7 +314,16 @@ class Grids extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: (){
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>
+                                CategoryProductScreen(
+                                  allServices: allServices, allProducts: allProducts,
+                                  category: 'Wheels & Tyres',appTitle: appTitles[5],topImage: topImages[5],
+                                  topBrands: topWheelBrands, topBrandsName: topWheelBrandsName,
+                                )
+                            )
+                        );
                       },
                       child: Container(
                         width: 65,
@@ -212,7 +350,16 @@ class Grids extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: (){
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>
+                                CategoryProductScreen(
+                                  allServices: allServices, allProducts: allProducts,
+                                  category: 'Cleaning',appTitle: appTitles[6],topImage: topImages[6],
+                                  topBrands: topCleaningBrands,topBrandsName: topCleaningBrandsName,
+                                )
+                            )
+                        );
                       },
                       child: Container(
                         width: 65,
@@ -239,7 +386,16 @@ class Grids extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: (){
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>
+                                CategoryProductScreen(
+                                  allServices: allServices, allProducts: allProducts,
+                                  category: 'Batteries',appTitle: appTitles[7],topImage: topImages[7],
+                                  topBrands: topBatteriesBrands,topBrandsName: topBatteriesBrandsName,
+                                )
+                            )
+                        );
                       },
                       child: Container(
                         width: 65,
@@ -266,7 +422,16 @@ class Grids extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: (){
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>
+                                CategoryProductScreen(
+                                  allServices: allServices, allProducts: allProducts,
+                                  category: 'oil',appTitle: appTitles[8],topImage: topImages[8],
+                                  topBrands: topOilBrands,topBrandsName: topOilBrandsName,
+                                )
+                            )
+                        );
                       },
                       child: Container(
                         width: 65,
@@ -293,7 +458,16 @@ class Grids extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: (){
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>
+                                CategoryProductScreen(
+                                  allServices: allServices, allProducts: allProducts,
+                                  category: 'Brake',appTitle: appTitles[9],topImage: topImages[9],
+                                  topBrands: topBrakeBrands,topBrandsName: topBrakeBrandsName,
+                                )
+                            )
+                        );
                       },
                       child: Container(
                         width: 65,

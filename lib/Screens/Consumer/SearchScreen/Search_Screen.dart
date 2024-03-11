@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:FixItParts/Screens/Merchant/ManageProductScreen/Manage_Screen.dart';
 import 'package:FixItParts/Screens/Merchant/ManageServiceScreen/Manage_Screen.dart';
-import 'package:collection/collection.dart';
+import '../OneProductScreen/One_Product_Screen.dart';
+import '../OneServiceScreen/One_Service_Screen.dart';
 
 class Both {
   final String id;
@@ -94,7 +95,7 @@ class _SearchScreen extends State<SearchScreen> {
   List<Product> filteredProducts = [];
   late List<Both> allItems;
   List<Both> filteredItems = [];
-  String displayNone = ';
+  String displayNone = '';
   String searchQuery = '';
 
   void initState() {
@@ -257,139 +258,149 @@ class _SearchScreen extends State<SearchScreen> {
             ),
           ),
         ),
+
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: Colors.grey.shade200,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                (displayNone=='') ?
-                Row(
-                  children: [
-                    Text("   Search Items", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                  ],
-                ) :
-                Text('${displayNone}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                      itemCount: filteredItems.length,
-                      itemBuilder: (context, index){
-                        final item = filteredItems[index];
-                        return Container(
-                          decoration: BoxDecoration(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                children: [
+                  (displayNone=='') ?
+                  Row(
+                    children: [
+                      Text("   Search Items", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    ],
+                  ) :
+                  Text('${displayNone}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+          
+                  ...filteredItems.map((item){
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          (item.type != 'Service') ?
+                              ProductScreen(product: item, allProducts: widget.allProducts,
+                                  allServices: widget.allServices) :
+                              ServiceScreen(Service: item, allProducts: widget.allProducts, allServices: widget.allServices)
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
                             border: Border(
-                                bottom: BorderSide(
-                                color: Colors.black54,
+                              bottom: BorderSide(
+                                color: Colors.black12,
                                 width: 1.0,
                               ),
                             ),
-                              color: Colors.white
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 100,
-                                  child: Container(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.network(item.imageUrl),
-                                    ),
+                            color: Colors.white
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.network(item.imageUrl),
                                   ),
                                 ),
-                                Expanded(
-                                  child: (item.type=='Service') ?
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(item.title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
-                                      Row(
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.only(left: 6,right: 6,top: 2,bottom: 2),
-                                              margin: EdgeInsets.only(right: 8,top: 3),
-                                              decoration: BoxDecoration(
-                                                color: Colors.green.shade50,
-                                                borderRadius: BorderRadius.circular(15)
-                                              ),
-                                              child: Text('${item.category.toString()}',
-                                                style: TextStyle(fontSize: 12,color: Colors.green,fontWeight: FontWeight.w900),)
-                                          ),
-                                          Container(
-                                              padding: EdgeInsets.only(left: 6,right: 6,top: 2,bottom: 2),
-                                              margin: EdgeInsets.only(right: 8,top: 3),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.greenAccent.shade100,
-                                                  borderRadius: BorderRadius.circular(15)
-                                              ),
-                                              child: Text('${item.type.toString()}',
-                                                style: TextStyle(fontSize: 12,color: Colors.black54,fontWeight: FontWeight.bold),
-                                              ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text('• Takes ${item.duration.toString()} '
-                                          '• ${item.inclusions.toString().replaceAll(',', ' •')} ',
-                                          style: TextStyle(fontSize: 12),
-                                      ),
-                                      (item.freePickup == 'yes') ?
-                                      Text('• Free Pickup & Drop}',
-                                          style: TextStyle(fontSize: 12),
-                                      ) :
-                                      Text('',
-                                        style: TextStyle(fontSize: 0),
-                                      ),
-                                    ],
-                                  ) :
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(item.title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
-                                      Row(
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.only(left: 6,right: 6,top: 2,bottom: 2),
-                                              margin: EdgeInsets.only(right: 8,top: 3),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green.shade50,
-                                                  borderRadius: BorderRadius.circular(15)
-                                              ),
-                                              child: Text('${item.category.toString()}',
-                                                style: TextStyle(fontSize: 12,color: Colors.green,fontWeight: FontWeight.w900),)
-                                          ),
-                                          Container(
+                              ),
+                              Expanded(
+                                child: (item.type=='Service') ?
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(item.title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+                                    Row(
+                                      children: [
+                                        Container(
                                             padding: EdgeInsets.only(left: 6,right: 6,top: 2,bottom: 2),
                                             margin: EdgeInsets.only(right: 8,top: 3),
                                             decoration: BoxDecoration(
-                                                color: Colors.greenAccent.shade100,
+                                                color: Colors.green.shade50,
                                                 borderRadius: BorderRadius.circular(15)
                                             ),
-                                            child: Text('${item.type.toString()}',
-                                              style: TextStyle(fontSize: 12,color: Colors.black54,fontWeight: FontWeight.bold),
-                                            ),
+                                            child: Text('${item.category.toString()}',
+                                              style: TextStyle(fontSize: 12,color: Colors.green,fontWeight: FontWeight.w900),)
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 6,right: 6,top: 2,bottom: 2),
+                                          margin: EdgeInsets.only(right: 8,top: 3),
+                                          decoration: BoxDecoration(
+                                              color: Colors.greenAccent.shade100,
+                                              borderRadius: BorderRadius.circular(15)
                                           ),
-                                        ],
-                                      ),
-                                      Text('Brand: ${item.brand.toString()}', style: TextStyle(fontSize: 12),),
-                                      Text('Model: ${item.model.toString()}', style: TextStyle(fontSize: 12),),
-                                      Text('Color: ${item.color.toString()}', style: TextStyle(fontSize: 12),),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                                          child: Text('${item.type.toString()}',
+                                            style: TextStyle(fontSize: 12,color: Colors.black54,fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text('• Takes ${item.duration.toString()} '
+                                        '• ${item.inclusions.toString().replaceAll(',', ' •')} ',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    (item.freePickup == 'yes') ?
+                                    Text('• Free Pickup & Drop',
+                                      style: TextStyle(fontSize: 12),
+                                    ) :
+                                    Text('',
+                                      style: TextStyle(fontSize: 0),
+                                    ),
+                                  ],
+                                ) :
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(item.title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+                                    Row(
+                                      children: [
+                                        Container(
+                                            padding: EdgeInsets.only(left: 6,right: 6,top: 2,bottom: 2),
+                                            margin: EdgeInsets.only(right: 8,top: 3),
+                                            decoration: BoxDecoration(
+                                                color: Colors.green.shade50,
+                                                borderRadius: BorderRadius.circular(15)
+                                            ),
+                                            child: Text('${item.category.toString()}',
+                                              style: TextStyle(fontSize: 12,color: Colors.green,fontWeight: FontWeight.w900),)
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 6,right: 6,top: 2,bottom: 2),
+                                          margin: EdgeInsets.only(right: 8,top: 3),
+                                          decoration: BoxDecoration(
+                                              color: Colors.greenAccent.shade100,
+                                              borderRadius: BorderRadius.circular(15)
+                                          ),
+                                          child: Text('${item.type.toString()}',
+                                            style: TextStyle(fontSize: 12,color: Colors.black54,fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text('Brand: ${item.brand.toString()}', style: TextStyle(fontSize: 12),),
+                                    Text('Model: ${item.model.toString()}', style: TextStyle(fontSize: 12),),
+                                    Text('Color: ${item.color.toString()}', style: TextStyle(fontSize: 12),),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
-                        );
-                      }
-                  ),
-                ),
-              ],
+                        ),
+                      ),
+                    );
+          
+                  }),
+          
+                ],
+              ),
             ),
           ),
         ),

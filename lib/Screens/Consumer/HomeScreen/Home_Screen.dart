@@ -1,3 +1,4 @@
+import 'package:FixItParts/Screens/Consumer/OneProductScreen/One_Product_Screen.dart';
 import 'package:flutter/material.dart';
 import '../ProfileScreen/Profile_Screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -8,6 +9,7 @@ import 'package:FixItParts/Screens/Merchant/ManageProductScreen/Manage_Screen.da
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../SearchScreen/Search_Screen.dart';
+import '../OneServiceScreen/One_Service_Screen.dart';
 
 class Commitment {
   final String image;
@@ -26,7 +28,7 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   List<Service> allServices = [];
   List<Product> allProducts = [];
-  List<Service> recomendedServices = [];
+  List<Product> recomendedProducts1 = [];
   List<Product> recomendedProducts = [];
 
   @override
@@ -49,10 +51,13 @@ class _HomePage extends State<HomePage> {
     allProducts = (jsonDecode(productsJsonResponse.body) as List<dynamic>).map((json) => Product.fromJson(json)).toList();
     print(allServices[0].title);
     print(allProducts[0].title);
-    for(int i=0;i<allProducts.length;i++){
+    for(int i=0;i<3;i++){
       recomendedProducts.add(allProducts[i]);
-      recomendedServices.add(allServices[i]);
     }
+    for(int i=3;i<6;i++){
+      recomendedProducts1.add(allProducts[i]);
+    }
+
   }
 
   int _current = 0;
@@ -184,8 +189,8 @@ class _HomePage extends State<HomePage> {
             ),
 
           ];
-
         },
+
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -226,6 +231,7 @@ class _HomePage extends State<HomePage> {
                   },
                 ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: imageList.asMap().entries.map((entry) {
@@ -241,7 +247,7 @@ class _HomePage extends State<HomePage> {
                 }).toList(),
               ),
 
-              Grids(),
+              Grids(allProducts: allProducts, allServices: allServices),
 
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15),
@@ -328,73 +334,219 @@ class _HomePage extends State<HomePage> {
                       ],
                     ),
 
-                    Container(
-                      height: 420,
-                      child: GridView.count(
-                        padding: EdgeInsets.only(top: 12),
-                        crossAxisCount: 3,
-                        childAspectRatio: 0.7,
-                        children: recomendedProducts.map((suggest) {
-                          return Container(
-                            margin: EdgeInsets.only(right: 5,left: 5, bottom: 10),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade400),
-                                borderRadius: BorderRadius.circular(5)
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                          Row(
+                          children: [
+                            ...recomendedProducts.map((suggest){
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                  ProductScreen(product: suggest, allProducts: allProducts, allServices: allServices))
+                                  );
+                                },
+                                child: Container(
+                                  height: 190,
+                                  width: MediaQuery.sizeOf(context).width*0.3,
+                                  margin: EdgeInsets.only(right: 5,left: 5, bottom: 10),
                                   decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(suggest.imageUrl),
-                                      fit: BoxFit.contain,
-                                    ),
-                                    color: Colors.white
+                                      border: Border.all(color: Colors.grey.shade400),
+                                      borderRadius: BorderRadius.circular(5)
                                   ),
-                                  height: 126,
-                                  // child: Padding(
-                                  //   padding: const EdgeInsets.all(5.0),
-                                  //   child: Image.network(suggest.imageUrl),
-                                  // ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 5,right: 5),
-                                  child: Text(suggest.title,overflow: TextOverflow.ellipsis, maxLines: 1,),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 5,right: 5),
-                                  child: Text(suggest.category,overflow: TextOverflow.ellipsis, maxLines: 1,),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 5),
-                                  child: Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: '₹${suggest.mrp}',
-                                          style: TextStyle(
-                                            decoration: TextDecoration.lineThrough,
-                                            color: Colors.grey,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white
+                                        ),
+                                        height: 126,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Image.network(suggest.imageUrl),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5,right: 5),
+                                        child: Text(suggest.title,overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5,right: 5),
+                                        child: Text(suggest.category,overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5),
+                                        child: Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '₹${suggest.mrp}',
+                                                style: TextStyle(
+                                                  decoration: TextDecoration.lineThrough,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: ' ₹${suggest.sellingPrice}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        TextSpan(
-                                          text: ' ₹${suggest.sellingPrice}',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            ...recomendedProducts1.map((suggest){
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                      ProductScreen(product: suggest, allProducts: allProducts, allServices: allServices))
+                                  );
+                                },
+                                child: Container(
+                                  height: 190,
+                                  width: MediaQuery.sizeOf(context).width*0.3,
+                                  margin: EdgeInsets.only(right: 5,left: 5, bottom: 10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.shade400),
+                                      borderRadius: BorderRadius.circular(5)
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white
+                                        ),
+                                        height: 126,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Image.network(suggest.imageUrl),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5,right: 5),
+                                        child: Text(suggest.title,overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5,right: 5),
+                                        child: Text(suggest.category,overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5),
+                                        child: Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '₹${suggest.mrp}',
+                                                style: TextStyle(
+                                                  decoration: TextDecoration.lineThrough,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: ' ₹${suggest.sellingPrice}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                                ),
+                              );
+                            }),
+                          ],
+                        )
+
+                      ],
                     ),
+
+
+                    //
+                    // SizedBox(
+                    //   width: 300,
+                    //   child: GridView.count(
+                    //     padding: EdgeInsets.only(top: 12),
+                    //     crossAxisCount: 3,
+                    //     childAspectRatio: 0.7,
+                    //     children: recomendedProducts.map((suggest) {
+                    //       return Container(
+                    //         margin: EdgeInsets.only(right: 5,left: 5, bottom: 10),
+                    //         decoration: BoxDecoration(
+                    //             border: Border.all(color: Colors.grey.shade400),
+                    //             borderRadius: BorderRadius.circular(5)
+                    //         ),
+                    //         child: Column(
+                    //           crossAxisAlignment: CrossAxisAlignment.start,
+                    //           children: [
+                    //             Container(
+                    //               decoration: BoxDecoration(
+                    //                   image: DecorationImage(
+                    //                     image: NetworkImage(suggest.imageUrl),
+                    //                     fit: BoxFit.contain,
+                    //                   ),
+                    //                   color: Colors.white
+                    //               ),
+                    //               height: 126,
+                    //               // child: Padding(
+                    //               //   padding: const EdgeInsets.all(5.0),
+                    //               //   child: Image.network(suggest.imageUrl),
+                    //               // ),
+                    //             ),
+                    //             Padding(
+                    //               padding: const EdgeInsets.only(left: 5,right: 5),
+                    //               child: Text(suggest.title,overflow: TextOverflow.ellipsis, maxLines: 1,),
+                    //             ),
+                    //             Padding(
+                    //               padding: const EdgeInsets.only(left: 5,right: 5),
+                    //               child: Text(suggest.category,overflow: TextOverflow.ellipsis, maxLines: 1,),
+                    //             ),
+                    //             Padding(
+                    //               padding: const EdgeInsets.only(left: 5),
+                    //               child: Text.rich(
+                    //                 TextSpan(
+                    //                   children: [
+                    //                     TextSpan(
+                    //                       text: '₹${suggest.mrp}',
+                    //                       style: TextStyle(
+                    //                         decoration: TextDecoration.lineThrough,
+                    //                         color: Colors.grey,
+                    //                       ),
+                    //                     ),
+                    //                     TextSpan(
+                    //                       text: ' ₹${suggest.sellingPrice}',
+                    //                       style: TextStyle(
+                    //                         color: Colors.black,
+                    //                         fontWeight: FontWeight.bold,
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //               ),
+                    //             )
+                    //           ],
+                    //         ),
+                    //       );
+                    //     }).toList(),
+                    //   ),
+                    // ),
 
                   ],
                 ),

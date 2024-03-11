@@ -1,4 +1,4 @@
-final url = "http://192.168.137.207:3000/";
+final url = "http://192.168.11.249:3000/";
 final registration = url + "registration";
 final getData = url + "getUserData";
 final login = url + "login";

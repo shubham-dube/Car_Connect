@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../SearchScreen/Search_Screen.dart';
 import 'package:FixItParts/Screens/Merchant/ManageServiceScreen/Manage_Screen.dart';
 import '../OneServiceScreen/One_Service_Screen.dart';
+import 'package:FixItParts/Cart_Model.dart';
+import 'package:provider/provider.dart';
+import '../CartScreen/Cart_Screen.dart';
 
 class CategoryServicesScreen extends StatefulWidget {
   final allProducts;
@@ -26,6 +29,11 @@ class _CategoryServicesScreen extends State<CategoryServicesScreen> {
           service.category.toLowerCase().contains(widget.category.toLowerCase())
       ).toList();
     });
+  }
+
+  void addToCart(dynamic service) {
+    final cartModel = Provider.of<CartModel>(context, listen: false);
+    cartModel.addItem(service,'Service');
   }
 
   @override
@@ -61,12 +69,37 @@ class _CategoryServicesScreen extends State<CategoryServicesScreen> {
                         },
                         icon: Icon(Icons.search)
                     ),
-                    IconButton(
-                        onPressed: (){
+                    Consumer<CartModel>(
+                      builder: (context, cartModel, child) {
+                        return Stack(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.shopping_cart),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(
+                                  allServices:widget.allServices,allProducts: widget.allProducts,
+                                )));
+                              },
+                            ),
+                            if (cartModel.itemCount > 0)
+                              Positioned(
+                                right: 6,
+                                top: 5,
+                                child: CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: Colors.red,
+                                  child: Text(
+                                    cartModel.itemCount.toString(),
+                                    style: TextStyle(color: Colors.white, fontSize: 10),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
 
-                        },
-                        icon: Icon(Icons.shopping_cart)
-                    )
+                      },
+                    ),
+
                   ],
                 ),
 
@@ -234,7 +267,9 @@ class _CategoryServicesScreen extends State<CategoryServicesScreen> {
                                                     borderRadius: BorderRadius.circular(5),
                                                   ),
                                                 ),
-                                                onPressed: (){},
+                                                onPressed: (){
+                                                  addToCart(service);
+                                                },
                                                 child: Text("Add")
                                             ),
                                           ),

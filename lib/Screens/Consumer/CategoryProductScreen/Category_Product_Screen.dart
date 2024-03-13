@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../SearchScreen/Search_Screen.dart';
 import 'package:FixItParts/Screens/Merchant/ManageProductScreen/Manage_Screen.dart';
 import '../OneProductScreen/One_Product_Screen.dart';
+import 'package:FixItParts/Cart_Model.dart';
+import 'package:provider/provider.dart';
+import '../CartScreen/Cart_Screen.dart';
 
 class CategoryProductScreen extends StatefulWidget {
 
@@ -30,6 +33,11 @@ class _CategoryProductScreen extends State<CategoryProductScreen> {
           product.category.toLowerCase().contains(widget.category.toLowerCase())
       ).toList();
     });
+  }
+
+  void addToCart(Product product) {
+    final cartModel = Provider.of<CartModel>(context, listen: false);
+    cartModel.addItem(product,'Product');
   }
 
   @override
@@ -65,12 +73,38 @@ class _CategoryProductScreen extends State<CategoryProductScreen> {
                         },
                         icon: Icon(Icons.search)
                     ),
-                    IconButton(
-                        onPressed: (){
 
-                        },
-                        icon: Icon(Icons.shopping_cart)
-                    )
+                    Consumer<CartModel>(
+                      builder: (context, cartModel, child) {
+                        return Stack(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.shopping_cart),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(
+                                  allServices:widget.allServices,allProducts: widget.allProducts,
+                                )));
+                              },
+                            ),
+                            if (cartModel.itemCount > 0)
+                              Positioned(
+                                right: 6,
+                                top: 5,
+                                child: CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: Colors.red,
+                                  child: Text(
+                                    cartModel.itemCount.toString(),
+                                    style: TextStyle(color: Colors.white, fontSize: 10),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
+
+                      },
+                    ),
+
                   ],
                 ),
 
@@ -262,7 +296,9 @@ class _CategoryProductScreen extends State<CategoryProductScreen> {
                                                     borderRadius: BorderRadius.circular(5),
                                                   ),
                                                 ),
-                                                onPressed: (){},
+                                                onPressed: (){
+                                                  addToCart(product);
+                                                },
                                                 child: Text("Add")
                                             ),
                                           ),

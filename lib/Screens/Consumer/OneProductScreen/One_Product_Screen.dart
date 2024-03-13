@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../SearchScreen/Search_Screen.dart';
+import 'package:FixItParts/Cart_Model.dart';
+import 'package:provider/provider.dart';
+import '../CartScreen/Cart_Screen.dart';
 
 class ProductScreen extends StatefulWidget {
   final product;
@@ -15,7 +18,6 @@ class _ProductScreen extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     double percentageDiff = ((double.parse(widget.product.mrp) - double.parse(widget.product.sellingPrice)) / double.parse(widget.product.mrp)) * 100;
     int percentageDifference = percentageDiff.toInt();
     Map<String, String> highlights = {
@@ -90,7 +92,38 @@ class _ProductScreen extends State<ProductScreen> {
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart))
+
+                Consumer<CartModel>(
+                  builder: (context, cartModel, child) {
+                    return Stack(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.shopping_cart),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(
+                              allServices:widget.allServices,allProducts: widget.allProducts,
+                            )));
+                          },
+                        ),
+                        if (cartModel.itemCount > 0)
+                          Positioned(
+                            right: 6,
+                            top: 5,
+                            child: CircleAvatar(
+                              radius: 8,
+                              backgroundColor: Colors.red,
+                              child: Text(
+                                cartModel.itemCount.toString(),
+                                style: TextStyle(color: Colors.white, fontSize: 10),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+
+                  },
+                ),
+
               ],
             ),
 
@@ -389,118 +422,94 @@ class _ProductScreen extends State<ProductScreen> {
                 ),
               ),
 
-
-
-
-              // Container(
-              //   margin: EdgeInsets.symmetric(vertical: 2),
-              //   padding: EdgeInsets.only(left: 19,right: 19,top: 6,bottom: 12,),
-              //   color: Colors.white,
-              //   width: MediaQuery.sizeOf(context).width,
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       SizedBox(height: 10,),
-              //
-              //       Container(
-              //         padding: EdgeInsets.all(12),
-              //         decoration: BoxDecoration(
-              //             color: Colors.blue.shade50,
-              //             borderRadius: BorderRadius.circular(20)
-              //         ),
-              //         child: Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             SizedBox(height: 6,),
-              //             Text("Steps after Booking", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
-              //             SizedBox(height: 15,),
-              //             Row(
-              //               crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 Column(
-              //                   mainAxisAlignment: MainAxisAlignment.start,
-              //                   children: [
-              //                     ...count.map((index) {
-              //                       return Column(
-              //                         children: [
-              //                           Container(
-              //                             padding: EdgeInsets.only(right: 3,left: 8,top: 2,bottom: 2),
-              //                             width: 25,
-              //                             height: 25,
-              //                             decoration: BoxDecoration(
-              //                                 color: Colors.red.shade100,
-              //                                 shape: BoxShape.circle
-              //                             ),
-              //                             child: Text(count[index-1].toString(),
-              //                               style: TextStyle(color: Colors.red, fontWeight: FontWeight.w900, fontSize: 14),),
-              //                           ),
-              //                           (index-1 != count.length-1) ?
-              //                           Container(height: 32,color: Colors.red,width: 1,) :
-              //                           Container(),
-              //                         ],
-              //                       );
-              //                     }),
-              //                   ],
-              //                 ),
-              //                 SizedBox(width: 6,),
-              //                 Expanded(
-              //                   child: Column(
-              //                     children: [
-              //                       ...steps.map((step) {
-              //                         return Padding(
-              //                           padding: const EdgeInsets.only(bottom: 20),
-              //                           child: Text(step, style: TextStyle(color: Colors.grey.shade800),),
-              //                         );
-              //                       })
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ],
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              //
-              // (additionalInclusions.length >=1) ?
-              // Container(
-              //   margin: EdgeInsets.symmetric(vertical: 5),
-              //   padding: EdgeInsets.only(left: 19,right: 19,top: 6,bottom: 12,),
-              //   color: Colors.white,
-              //   width: MediaQuery.sizeOf(context).width,
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       SizedBox(height: 10,),
-              //       Text("Additional Inclusions", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
-              //       SizedBox(height: 10,),
-              //
-              //       ...additionalInclusions.map((inclusion) {
-              //         return Row(
-              //           children: [
-              //             Icon(Icons.check_box, color: Colors.green,size: 20,),
-              //             SizedBox(width: 7,),
-              //             Padding(
-              //               padding: const EdgeInsets.only(top: 3,bottom: 3),
-              //               child: Text(inclusion.trim(), style: TextStyle(color: Colors.black54),),
-              //             ),
-              //           ],
-              //         );
-              //       }),
-              //
-              //     ],
-              //   ),
-              // ) :
-              // Container(),
-
             ],
           ),
         ),
       ),
 
+      floatingActionButton: FloatingActionButtonBar(product: widget.product,),
 
+    );
+  }
+}
+
+class FloatingActionButtonBar extends StatefulWidget {
+  final product;
+  const FloatingActionButtonBar({required this.product});
+
+  @override
+  _FloatingActionButtonBarState createState() => _FloatingActionButtonBarState();
+}
+
+class _FloatingActionButtonBarState extends State<FloatingActionButtonBar> {
+
+  void addToCart(dynamic product) {
+    final cartModel = Provider.of<CartModel>(context, listen: false);
+    cartModel.addItem(product,'Product');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.sizeOf(context).width*0.918,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12)
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: MediaQuery.sizeOf(context).width*0.459,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+              color: Colors.blueAccent,
+            ),
+
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              onPressed: (){
+                addToCart(widget.product);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_shopping_cart, color: Colors.white,),
+                  SizedBox(width: 5,),
+                  Text('Add to Cart', style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: MediaQuery.sizeOf(context).width*0.459,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
+              color: Colors.red,
+            ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              onPressed: (){},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.currency_rupee, color: Colors.white,size: 20,),
+                  SizedBox(width: 5,),
+                  Text('Buy Now', style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

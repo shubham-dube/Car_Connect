@@ -20,6 +20,7 @@ dependencies:
   image_picker:
   dotted_border:
   carousel_slider:
+  provider:
   #  firebase_analytics:
   firebase_core:
   firebase_storage: ^11.0.7

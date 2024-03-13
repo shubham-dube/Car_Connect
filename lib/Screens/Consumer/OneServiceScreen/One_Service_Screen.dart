@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:FixItParts/Screens/Merchant/ManageServiceScreen/Manage_Screen.dart';
 import '../SearchScreen/Search_Screen.dart';
+import 'package:FixItParts/Cart_Model.dart';
+import 'package:provider/provider.dart';
+import '../CartScreen/Cart_Screen.dart';
 
 class ServiceScreen extends StatefulWidget {
   final Service;
@@ -16,7 +19,6 @@ class _ServiceScreen extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     double percentageDiff = ((widget.Service.mrp - double.parse(widget.Service.sellingPrice)) / widget.Service.mrp) * 100;
     int percentageDifference = percentageDiff.toInt();
     List<String> inclusions = widget.Service.inclusions.split(',');
@@ -74,7 +76,36 @@ class _ServiceScreen extends State<ServiceScreen> {
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart))
+                Consumer<CartModel>(
+                  builder: (context, cartModel, child) {
+                    return Stack(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.shopping_cart),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(
+                              allServices:widget.allServices,allProducts: widget.allProducts,
+                            )));
+                          },
+                        ),
+                        if (cartModel.itemCount > 0)
+                          Positioned(
+                            right: 6,
+                            top: 5,
+                            child: CircleAvatar(
+                              radius: 8,
+                              backgroundColor: Colors.red,
+                              child: Text(
+                                cartModel.itemCount.toString(),
+                                style: TextStyle(color: Colors.white, fontSize: 10),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+
+                  },
+                ),
               ],
             ),
 
@@ -463,8 +494,90 @@ class _ServiceScreen extends State<ServiceScreen> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButtonBar(service: widget.Service,),
 
+    );
+  }
+}
 
+class FloatingActionButtonBar extends StatefulWidget {
+  final service;
+  const FloatingActionButtonBar({required this.service});
+
+  @override
+  _FloatingActionButtonBarState createState() => _FloatingActionButtonBarState();
+}
+
+class _FloatingActionButtonBarState extends State<FloatingActionButtonBar> {
+  int _counter = 0;
+
+  void addToCart(dynamic service) {
+    final cartModel = Provider.of<CartModel>(context, listen: false);
+    cartModel.addItem(service,'Service');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.sizeOf(context).width*0.918,
+      height: 50,
+      decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(12)
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: MediaQuery.sizeOf(context).width*0.459,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+              color: Colors.blueAccent,
+            ),
+
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              onPressed: (){
+                addToCart(widget.service);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_shopping_cart, color: Colors.white,),
+                  SizedBox(width: 5,),
+                  Text('Add to Cart', style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: MediaQuery.sizeOf(context).width*0.459,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
+              color: Colors.red,
+            ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              onPressed: (){},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.book_online_outlined, color: Colors.white,size: 20,),
+                  SizedBox(width: 5,),
+                  Text('Book Now', style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

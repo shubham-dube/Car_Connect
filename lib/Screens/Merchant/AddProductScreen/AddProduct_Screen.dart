@@ -341,77 +341,85 @@ class _AddProduct extends State<AddProduct> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        bottom: TabBar(
-          unselectedLabelColor: Colors.black87,
-          labelColor: Colors.white,
-          indicator: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.deepOrange,
-                width: 2,
-              ),
-            ),
+      appBar: PreferredSize(
+        preferredSize: Size(70, 100),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [Colors.deepOrange.shade100,Colors.blue.shade100], begin: Alignment.topLeft,end: Alignment.bottomRight)
           ),
-          controller: _tabController,
-          tabs: [
-            Tab(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
+          child: AppBar(
+            bottom: TabBar(
+              unselectedLabelColor: Colors.black87,
+              labelColor: Colors.deepOrange,
+              indicator: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.deepOrange,
+                    width: 2,
+                  ),
+                ),
+              ),
+              controller: _tabController,
+              tabs: [
+                Tab(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: Icon(Icons.check_circle_outline_outlined, size: 15,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Icon(Icons.check_circle_outline_outlined, size: 15,),
+                            ),
+                            Text("Select Category", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+                          ],
                         ),
-                        Text("Select Category", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+                        Text(selectedCategory, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
                       ],
-                    ),
-                    Text(selectedCategory, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-                  ],
-                )
-            ),
-            Tab(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
+                    )
+                ),
+                Tab(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: Icon(Icons.check_circle_outline_outlined, size: 15,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Icon(Icons.check_circle_outline_outlined, size: 15,),
+                            ),
+                            Text("Select Brand", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))
+                          ],
                         ),
-                        Text("Select Brand", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))
+                        Text(selectedBrand, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
                       ],
-                    ),
-                    Text(selectedBrand, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-                  ],
-                )
-            ),
-            Tab(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
+                    )
+                ),
+                Tab(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: Icon(Icons.check_circle_outline_outlined, size: 15,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Icon(Icons.check_circle_outline_outlined, size: 15,),
+                            ),
+                            Text("Product Info", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))
+                          ],
                         ),
-                        Text("Product Info", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))
+                        Text("", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))
                       ],
-                    ),
-                    Text("", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))
-                  ],
-                )
+                    )
+                ),
+              ],
             ),
-          ],
+            title: Text("Add Listings", style: TextStyle(fontSize: 20),),
+          ),
         ),
-        title: Text("Add Listings", style: TextStyle(fontSize: 20),),
       ),
       body: TabBarView(
         controller: _tabController,

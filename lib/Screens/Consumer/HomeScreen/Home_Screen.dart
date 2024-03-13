@@ -10,6 +10,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../SearchScreen/Search_Screen.dart';
 import '../OneServiceScreen/One_Service_Screen.dart';
+import '../CartScreen/Cart_Screen.dart';
+import 'package:FixItParts/Cart_Model.dart';
+import 'package:provider/provider.dart';
 
 class Commitment {
   final String image;
@@ -35,6 +38,11 @@ class _HomePage extends State<HomePage> {
   void initState() {
     super.initState();
     getAllData();
+  }
+
+  void addToCart(dynamic item, String type) {
+    final cartModel = Provider.of<CartModel>(context, listen: false);
+    cartModel.addItem(item,type);
   }
 
   Future<void> getAllData() async {
@@ -94,6 +102,7 @@ class _HomePage extends State<HomePage> {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              automaticallyImplyLeading: false,
               iconTheme: IconThemeData(
                 color: Colors.white
               ),
@@ -103,12 +112,37 @@ class _HomePage extends State<HomePage> {
                   Text('Raichur, Yermarus Camp', style: TextStyle(fontSize: 15),),
                   Row(
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.shopping_cart_outlined),
-                        onPressed: () {
+                      Consumer<CartModel>(
+                        builder: (context, cartModel, child) {
+                          return Stack(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.shopping_cart),
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(
+                                    allServices: allServices,allProducts: allProducts,
+                                  )));
+                                },
+                              ),
+                              if (cartModel.itemCount > 0)
+                                Positioned(
+                                  right: 6,
+                                  top: 5,
+                                  child: CircleAvatar(
+                                    radius: 9,
+                                    backgroundColor: Colors.red,
+                                    child: Text(
+                                      cartModel.itemCount.toString(),
+                                      style: TextStyle(color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
 
                         },
                       ),
+
                       IconButton(
                         icon: Icon(Icons.car_repair_outlined),
                         onPressed: () {

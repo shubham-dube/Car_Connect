@@ -101,12 +101,33 @@ class MyOrdersScreen extends StatefulWidget {
 
 class _MyOrdersScreen extends State<MyOrdersScreen> {
 
+
+  Future<void> acceptOrder(orderId) async {
+    await Future.delayed(Duration(seconds: 0));
+
+    var reqBody = {
+      "orderId": orderId
+    };
+
+    final jsonResponse = await http.post(
+      Uri.parse(accept),
+      headers: {"content-Type": "application/json"},
+      body: jsonEncode(reqBody),
+    );
+
+    final response = jsonDecode(jsonResponse.body);
+    print(response);
+    await fetchOrders();
+  }
+
+
   Future<void> cancelOrder(orderId) async {
     await Future.delayed(Duration(seconds: 0));
 
     var reqBody = {
       "orderId": orderId
     };
+
     final jsonResponse = await http.post(
       Uri.parse(CancelOrder),
       headers: {"content-Type": "application/json"},
@@ -116,7 +137,6 @@ class _MyOrdersScreen extends State<MyOrdersScreen> {
     final response = jsonDecode(jsonResponse.body);
     print(response);
     await fetchOrders();
-
   }
 
   Future<List<OrderModel>> fetchOrders() async {
@@ -125,18 +145,14 @@ class _MyOrdersScreen extends State<MyOrdersScreen> {
     var prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     Map<String,dynamic> tokenData = JwtDecoder.decode(token!);
-    var customerId = tokenData['mobile'];
-    var reqBody = {
-      "customerId": customerId
-    };
+    var merchantId = tokenData['mobile'];
+
     final jsonResponse = await http.post(
       Uri.parse(getOrders),
       headers: {"content-Type": "application/json"},
-      body: jsonEncode(reqBody),
     );
 
     final jsonOrders = jsonDecode(jsonResponse.body) as List<dynamic>;
-
     return jsonOrders.map((e) => OrderModel.fromJson(e)).toList();
   }
 
@@ -145,7 +161,7 @@ class _MyOrdersScreen extends State<MyOrdersScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Orders'),
+        title: Text('Manage Orders'),
       ),
       body: FutureBuilder<List<OrderModel>>(
         future: fetchOrders(),
@@ -192,7 +208,7 @@ class _MyOrdersScreen extends State<MyOrdersScreen> {
                           );
                         }),
                         if(order.serviceDetails.length != 0)
-                        Text("Services Booked", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                          Text("Services Booked", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
                         SizedBox(height: 7,),
                         ...order.serviceDetails.map((service){
                           return Container(
@@ -216,25 +232,52 @@ class _MyOrdersScreen extends State<MyOrdersScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Customer Name : ${'Name'}"),
+                                  Text("Order Status : ${order.status}"),
+                                  Text("Order Value : ${order.orderAmount}"),
+                                  Text("Customer Address : ${order.deliveryAddress}"),
+                              
+                                ],
+                              ),
+                            ),
+
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Order Status : ${order.status}"),
-                                Text("Order Value : ${order.orderAmount}")
+                                ElevatedButton(
+                                    onPressed: () {
+                                      cancelOrder(order.orderId);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.yellow.shade800,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Text('Cancel', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                                ),
+
+                                ElevatedButton(
+                                    onPressed: () {
+                                      acceptOrder(order.orderId);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.yellow.shade800,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Text('Accept', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                                ),
+
+
                               ],
                             ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  cancelOrder(order.orderId);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.yellow.shade800,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: Text('Cancel', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                            ),
+
+
                           ],
                         ),
 

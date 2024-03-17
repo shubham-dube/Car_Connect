@@ -1,3 +1,5 @@
+import 'package:FixItParts/Screens/Consumer/HomeScreen/HandleFile.dart';
+import 'package:FixItParts/Screens/Merchant/HomeScreen/HandleFile.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:FixItParts/Screens/RegistrationScreen/Registration_Screen.dart';
@@ -60,7 +62,7 @@ class _LoginPage extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePage(token: myToken),
+              builder: (context) => HandleFile(),
             ),
           );
         }
@@ -68,7 +70,7 @@ class _LoginPage extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => MerchantHomePage(token: myToken),
+              builder: (context) =>HandleFile2(),
             ),
           );
         }

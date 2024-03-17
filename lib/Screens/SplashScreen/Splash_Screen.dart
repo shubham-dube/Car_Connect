@@ -1,3 +1,5 @@
+import 'package:FixItParts/Screens/Consumer/HomeScreen/HandleFile.dart';
+import 'package:FixItParts/Screens/Merchant/HomeScreen/HandleFile.dart';
 import 'package:flutter/material.dart';
 import '../LoginScreen/Login_Screen.dart';
 import '../Consumer/HomeScreen/Home_Screen.dart';
@@ -64,21 +66,20 @@ void whereToGo(context) async {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                MerchantHomePage(token: token),
-          ),
-        );
-      }
-      else {
-        var token = pref.getString("token");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                HomePage(token: token),
+                HandleFile2(),
           ),
         );
       }
 
+      else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                HandleFile(),
+          ),
+        );
+      }
     }
     if(isLoggedIn==false){
       Navigator.pushReplacement(

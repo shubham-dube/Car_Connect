@@ -8,8 +8,7 @@ import '../ManageProductScreen/Manage_Screen.dart';
 import '../ManageServiceScreen/Manage_Screen.dart';
 
 class MerchantHomePage extends StatefulWidget {
-  final token;
-  const MerchantHomePage({required this.token});
+  const MerchantHomePage();
 
   @override
   State<MerchantHomePage> createState() => _MerchantHomePage();
@@ -347,7 +346,6 @@ class _MerchantHomePage extends State<MerchantHomePage> {
         ),
       ),
 
-      bottomNavigationBar: BottomNavBarMerchant(),
     );
   }
 }

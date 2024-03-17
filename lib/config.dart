@@ -1,4 +1,4 @@
-final url = "http://192.168.11.249:3000/";
+final url = "https://restful-apis-backend-flutter-app-car-app.onrender.com/";
 
 final registration = url + "registration";
 final getData = url + "getUserData";
@@ -12,3 +12,5 @@ final addBrand = url + "addBrand";
 final getBrands = url + "getBrands";
 final placeOrder = url + "placeOrder";
 final getOrders = url + "getOrders";
+final CancelOrder = url + "cancelOrder";
+final accept = url + "acceptOrder";

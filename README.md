@@ -1,6 +1,5 @@
-# fixitparts2
-
-Car Application
+# Car Connect
+Car Services and Products Flutter Application
 
 ## Getting Started
 
